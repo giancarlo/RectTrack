@@ -17,7 +17,6 @@ namespace RectTrack
     public class Tracker : ContainerControl
     {
         Control _control;
-        Bitmap _bm;
         Point _mouseStart;
         Point _offset;
         CursorPosition _mouseDown = CursorPosition.NONE;
@@ -187,7 +186,6 @@ namespace RectTrack
                 Parent.Capture = true;
                 _mouseStart = new Point(e.X, e.Y);
                 _mouseDown = GetCursorPosition(e.X, e.Y);
-                CreateBitmap();
                 Invalidate();
             }
 
@@ -211,7 +209,6 @@ namespace RectTrack
 
         protected override void OnPaintBackground(PaintEventArgs pevent)
         {
-            DrawBorder(pevent.Graphics);
             DrawRect(pevent);
         }
 
@@ -252,8 +249,6 @@ namespace RectTrack
         {
             if (Control != null)
             {
-                //SelectedControl.Parent.Invalidate(SelectedControl.Bounds);
-
                 SetBounds(
                     OffSet.X + (int)Control.Left - BorderWidth,
                     OffSet.Y + (int)Control.Top - BorderWidth,
@@ -273,20 +268,6 @@ namespace RectTrack
             SetPosition();
         }
 
-        protected void CreateBitmap()
-        {
-            _bm = new Bitmap((int)Control.Width, (int)Control.Height);
-            _control.DrawToBitmap(_bm, new Rectangle(0, 0, (int)Control.Width, (int)Control.Height));
-        }
-
-        protected void DrawBorder(Graphics g)
-        {
-            /*    g.FillRectangle(Brushes.Silver, new Rectangle(0, 0, BorderWidth, Height));
-                g.FillRectangle(Brushes.Silver, new Rectangle(0, 0, Width, BorderWidth));
-                g.FillRectangle(Brushes.Silver, new Rectangle(0, Height - BorderWidth, Width, BorderWidth));
-                g.FillRectangle(Brushes.Silver, new Rectangle(Width - BorderWidth, 0, BorderWidth, Height));                */
-        }
-
         public Rectangle ControlBounds
         {
             get
@@ -302,9 +283,6 @@ namespace RectTrack
 
             Rectangle r = new Rectangle(0, 0, Width, Height);
             Rectangle cr = ControlBounds;
-
-            if (_mouseDown != CursorPosition.NONE)
-                e.Graphics.DrawImage(Image.FromHbitmap(_bm.GetHbitmap()), cr);
 
             ControlPaint.DrawSelectionFrame(e.Graphics, true, r, cr, Color.DarkGray);
 
