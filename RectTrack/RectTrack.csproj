@@ -50,4 +50,7 @@
     <Reference Include="System.Drawing" />
     <Reference Include="System.Windows.Forms" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="README" />
+  </ItemGroup>
 </Project>
